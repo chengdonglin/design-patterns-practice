@@ -1,0 +1,18 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:design
+    driver-class-name: org.h2.Driver
+    username: design
+    password: design
+  h2:
+    console:
+      enabled: true
+      path: /myH2  # 通过访问myH2路径可以访问h2数据库的可视化界面
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
