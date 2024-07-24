@@ -1,6 +1,6 @@
-package com.ssn.design.patterns.pojo;
+package com.ssn.design.patterns.repo;
 
-import com.ssn.design.patterns.repo.UserInfo;
+import com.ssn.design.patterns.pojo.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

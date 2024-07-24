@@ -1,7 +1,7 @@
-package com.ssn.design.patterns.service;
+package com.ssn.design.patterns.service.login;
 
-import com.ssn.design.patterns.pojo.UserRepository;
-import com.ssn.design.patterns.repo.UserInfo;
+import com.ssn.design.patterns.repo.UserRepository;
+import com.ssn.design.patterns.pojo.UserInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

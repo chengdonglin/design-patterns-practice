@@ -1,7 +1,7 @@
 package com.ssn.design.patterns.controller;
 
-import com.ssn.design.patterns.repo.UserInfo;
-import com.ssn.design.patterns.service.UserService;
+import com.ssn.design.patterns.pojo.UserInfo;
+import com.ssn.design.patterns.service.login.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;

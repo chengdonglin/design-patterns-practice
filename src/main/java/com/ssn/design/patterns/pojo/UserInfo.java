@@ -1,4 +1,4 @@
-package com.ssn.design.patterns.repo;
+package com.ssn.design.patterns.pojo;
 
 import lombok.Data;
 
