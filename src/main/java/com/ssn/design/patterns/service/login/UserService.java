@@ -15,6 +15,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+
     public String login(String account,String password) {
         UserInfo userInfo = userRepository.findByUsernameAndUserPassword(account, password);
         if (userInfo == null) {
@@ -32,7 +33,7 @@ public class UserService {
         return "register success";
     }
 
-    private boolean checkUserExist(String username) {
+    public boolean checkUserExist(String username) {
         UserInfo userInfo = userRepository.findByUsername(username);
         if (userInfo == null){
             return false;
