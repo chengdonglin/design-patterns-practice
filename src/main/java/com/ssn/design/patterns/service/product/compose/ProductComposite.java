@@ -1,6 +1,8 @@
 package com.ssn.design.patterns.service.product.compose;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,6 +12,8 @@ import java.util.List;
  * Composite 树枝组件
  */
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductComposite extends AbstractProductItem{
 
     private Integer id;
@@ -25,7 +29,7 @@ public class ProductComposite extends AbstractProductItem{
      * @param item
      */
     @Override
-    protected void addProductItem(AbstractProductItem item) {
+    public void addProductItem(AbstractProductItem item) {
         this.child.add(item);
     }
 
@@ -34,7 +38,7 @@ public class ProductComposite extends AbstractProductItem{
      * @param item
      */
     @Override
-    protected void delProductChild(AbstractProductItem item) {
+    public void delProductChild(AbstractProductItem item) {
         ProductComposite removeItem = (ProductComposite)item;
         Iterator iterator = child.iterator();
         while (iterator.hasNext()) {

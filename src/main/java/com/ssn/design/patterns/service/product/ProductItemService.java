@@ -1,9 +1,14 @@
-package com.ssn.design.patterns.service.product.compose;
+package com.ssn.design.patterns.service.product;
 
 import com.ssn.design.patterns.cache.RedisCommonProcessor;
 import com.ssn.design.patterns.pojo.ProductItem;
 import com.ssn.design.patterns.repo.ProductItemRepository;
+import com.ssn.design.patterns.service.product.compose.AbstractProductItem;
+import com.ssn.design.patterns.service.product.compose.ProductComposite;
+import com.ssn.design.patterns.service.product.vistor.AddItemVisitor;
+import com.ssn.design.patterns.service.product.vistor.DelItemVisitor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +22,15 @@ public class ProductItemService {
 
     private final ProductItemRepository productItemRepository;
 
-    public ProductItemService(RedisCommonProcessor redisCommonProcessor, ProductItemRepository productItemRepository) {
+    private final AddItemVisitor addItemVisitor;
+
+    private final DelItemVisitor delItemVisitor;
+
+    public ProductItemService(RedisCommonProcessor redisCommonProcessor, ProductItemRepository productItemRepository, AddItemVisitor addItemVisitor, DelItemVisitor delItemVisitor) {
         this.redisCommonProcessor = redisCommonProcessor;
         this.productItemRepository = productItemRepository;
+        this.addItemVisitor = addItemVisitor;
+        this.delItemVisitor = delItemVisitor;
     }
 
     public ProductComposite fetchAllItems() {
@@ -36,6 +47,7 @@ public class ProductItemService {
         return items;
     }
 
+
     private ProductComposite genegateProductTree(List<ProductItem> fetchDbItems) {
         List<ProductComposite> composites = new ArrayList<>();
         fetchDbItems.forEach(dbItem -> {
@@ -51,5 +63,35 @@ public class ProductItemService {
         });
         ProductComposite composite = composites.size() == 0 ? null : composites.get(0);
         return composite;
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public ProductComposite addItems(ProductItem item) {
+        // 更新数据库
+        productItemRepository.addItem(item.getName(),item.getPid());
+        ProductItem productItem = productItemRepository.findByNameAndPid(item.getName(), item.getPid());
+        ProductComposite addItem = ProductComposite.builder()
+                .id(productItem.getId())
+                .name(productItem.getName())
+                .pid(productItem.getPid())
+                .child(new ArrayList<>())
+                .build();
+        AbstractProductItem updateItems = addItemVisitor.visitor(addItem);
+        redisCommonProcessor.set("items",updateItems);
+        return (ProductComposite) updateItems;
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public ProductComposite delItems(ProductItem item) {
+        productItemRepository.delItem(item.getId());
+        ProductComposite delItem = ProductComposite.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .pid(item.getPid()).build();
+        AbstractProductItem updateItems = delItemVisitor.visitor(delItem);
+        redisCommonProcessor.set("items",updateItems);
+        return (ProductComposite) updateItems;
     }
 }
