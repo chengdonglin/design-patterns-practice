@@ -61,6 +61,6 @@ public class DesignPatternsApplicationTest {
         decode.decode("D://test//1.tmap");
         log.info("==============================");
         FileMetaDecode kfb = metaDecodeFactory.getMetaDecode("KFB");
-        decode.decode("D://test//1.kfb");
+        kfb.decode("D://test//1.kfb");
     }
 }

@@ -15,8 +15,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class KFBMetaDecode extends AbstractMetaDecode{
     @Override
+    public void before() {
+        log.info("KFB前置处理");
+    }
+
+    @Override
+    public void after() {
+        log.info("KFB后置处理");
+    }
+
+    @Override
     public FileMeta parse(String filePath) {
-        log.info("JF格式文件解析元数据");
+        log.info("KFB格式文件解析元数据");
         return new FileMeta(10000,10000,20);
     }
 

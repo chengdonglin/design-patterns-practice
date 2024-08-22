@@ -14,10 +14,16 @@ import lombok.extern.slf4j.Slf4j;
 public abstract class AbstractMetaDecode implements FileMetaDecode{
     @Override
     public void decode(String filePath) {
+        before();
         checkFileExist(filePath);
         FileMeta fileMeta = parse(filePath);
         saveMeta(fileMeta);
+        after();
     }
+
+    public abstract void before();
+
+    public abstract void after();
 
     public void checkFileExist(String filePath) {
         log.info("检查文件是否存在");

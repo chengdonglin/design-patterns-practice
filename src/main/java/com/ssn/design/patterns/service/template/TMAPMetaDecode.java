@@ -15,6 +15,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class TMAPMetaDecode extends AbstractMetaDecode{
     @Override
+    public void before() {
+        log.info("TMAP前置处理");
+    }
+
+    @Override
+    public void after() {
+        log.info("TMAP后置处理");
+    }
+
+    @Override
     public FileMeta parse(String filePath) {
        log.info("TMAP格式元数据解析");
         return new FileMeta(20000,2000,40);
